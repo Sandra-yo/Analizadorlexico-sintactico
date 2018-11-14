@@ -16,20 +16,28 @@ public class Pila {
         tope =  null;
     }
     
-    public void agregar(String palabra){
+    public void push(String palabra){
         Nodo nuevo= new Nodo(palabra);
-        
-        
         if(tope==null){
             tope=nuevo;
         }else{
             tope.anterior=nuevo;
             nuevo.siguiente=tope;
-            tope=nuevo;
-            
-            
-            
+            tope=nuevo;    
         }
+    }
+   
+    public String pop(){
+        Nodo nuevo;
+        if(tope!=null){
+            nuevo=tope;
+            tope=tope.siguiente;
+            tope.anterior=null;
+            return tope.palabra;
+        }else{
+            return null;
+        }
+        
     }
     public void mostrar(){
         Nodo aux= tope;
@@ -43,7 +51,20 @@ public class Pila {
             //System.out.println(aux);
         }
     }
-    
+    public static void main(String[] args) {
+        Pila o= new Pila();
+        o.push("uno");
+        o.push("dos");
+        o.push("tres");
+        o.push("cuatro");
+        o.push("cinco");
+        o.push("seis");
+        o.mostrar();
+        o.pop();
+        System.out.println("..");
+        o.mostrar();
+
+    }
    
     
    

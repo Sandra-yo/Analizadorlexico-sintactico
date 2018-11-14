@@ -5,12 +5,21 @@
  */
 package CodigoPrincipal;
 
+import Estructura.Pila;
+import Lexico1.LexicoSwitch;
+import Lexico2.Lector;
+
 /**
  *
  * @author alector
  */
 public class lexicoSintactico {
     int matriz[][];
+    String x,a;
+    Lector l;
+    LexicoSwitch ls;
+    Pila pila;
+    
     
     public lexicoSintactico(){
         matriz = new int[14][13];
@@ -54,6 +63,16 @@ public class lexicoSintactico {
         
 
 
+    }
+    
+    public void lldriver(){
+        // simbolo inicial en la pila
+        pila.push("System_goal");
+        //asignar a x el simbolo el simbolo en la parte alta de la pila
+        x=pila.pop();
+        //asigne a "a" el token de entrada
+        
+        
     }
     public static void main(String[] args) {
         lexicoSintactico n = new lexicoSintactico();

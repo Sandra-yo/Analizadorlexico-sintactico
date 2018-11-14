@@ -10,24 +10,31 @@ public class LexicoSwitch {
     int estado;
     boolean IsAccept;
     int cont;
+    
+    
 
-    public void ingresa() throws FileNotFoundException, IOException {
-
+    public String ingresa() throws FileNotFoundException, IOException {
+        
         String entrada;
         FileReader f = new FileReader("src/Lexico1/entradas.txt");
         try (BufferedReader b = new BufferedReader(f)) {
+            
             while ((entrada = b.readLine()) != null) {
                 cont=0;
                 proceso(entrada);
+                System.out.println(entrada+"...");
+               
             }
         } catch (Exception e) {
             System.out.println("archivo no encontrado");
 
         }
-
+       
+        return null;
     }
 
-    public void proceso(String c) {
+    public boolean proceso(String c) {
+        boolean resultado=true;
         String cadena = c.replace(" ", "");
         for (int i = 0; i < cadena.length(); i++) {
 //            if(cadena.charAt(i)){
@@ -99,24 +106,26 @@ public class LexicoSwitch {
         }
         
         if(estado==1|estado==2){
-            System.out.println("Digito: "+cadena);
+          //  System.out.println("Digito: "+cadena);
+           
         }
         
         if(estado==3){
-            System.out.println("Identificador: "+cadena);
+           // System.out.println("Identificador: "+cadena);
         }
         if(estado==4){
             if(cont==1){
-            System.out.println("Caracter simple: "+cadena);
+           // System.out.println("Caracter simple: "+cadena);
             }else if(cont!=1){
                             System.out.println("Tienes "+cont+" caracter simple: "+cadena);
             }
                 
         }
         if(estado==5){
-            System.err.println("Entrada no valida: "+cadena);
+            resultado=true;
+          //  System.err.println("Entrada no valida: "+cadena);
         }
-
+return resultado;
     }
 
     public boolean isDigit(char c) {
@@ -138,6 +147,7 @@ public class LexicoSwitch {
     public static void main(String[] args) throws IOException {
         LexicoSwitch t = new LexicoSwitch();
         t.ingresa();
+        
     }
 
 }
