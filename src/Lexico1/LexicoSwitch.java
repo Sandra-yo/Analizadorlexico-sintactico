@@ -9,7 +9,9 @@ public class LexicoSwitch {
 
     int estado;
     boolean IsAccept;
-    int cont;
+    int cont,numero=0;
+    String analisis[];
+    String tipo;
     
     
 
@@ -22,9 +24,11 @@ public class LexicoSwitch {
             while ((entrada = b.readLine()) != null) {
                 cont=0;
                 proceso(entrada);
-                System.out.println(entrada+"...");
+                System.out.println(tipo);
+                
                
             }
+            
         } catch (Exception e) {
             System.out.println("archivo no encontrado");
 
@@ -33,9 +37,9 @@ public class LexicoSwitch {
         return null;
     }
 
-    public boolean proceso(String c) {
-        boolean resultado=true;
+    public void proceso(String c) {
         String cadena = c.replace(" ", "");
+        
         for (int i = 0; i < cadena.length(); i++) {
 //            if(cadena.charAt(i)){
 //                
@@ -107,25 +111,27 @@ public class LexicoSwitch {
         
         if(estado==1|estado==2){
           //  System.out.println("Digito: "+cadena);
+            tipo="digito";
            
         }
         
         if(estado==3){
            // System.out.println("Identificador: "+cadena);
+            tipo="identificador";
         }
         if(estado==4){
             if(cont==1){
            // System.out.println("Caracter simple: "+cadena);
+                tipo=  "caracter";
             }else if(cont!=1){
                             System.out.println("Tienes "+cont+" caracter simple: "+cadena);
             }
                 
         }
         if(estado==5){
-            resultado=true;
           //  System.err.println("Entrada no valida: "+cadena);
         }
-return resultado;
+
     }
 
     public boolean isDigit(char c) {
@@ -146,7 +152,8 @@ return resultado;
 
     public static void main(String[] args) throws IOException {
         LexicoSwitch t = new LexicoSwitch();
-        t.ingresa();
+        t.ingresa(); 
+
         
     }
 
