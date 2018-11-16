@@ -5,6 +5,11 @@
  */
 package CodigoPrincipal;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  *
  * @author alector
@@ -12,7 +17,12 @@ package CodigoPrincipal;
 public class lexicoSintactico {
     int matriz[][];
     
-    public lexicoSintactico(){
+    public lexicoSintactico() throws IOException{
+     creacionMatriz();
+     ingresa();
+    }
+    public void creacionMatriz(){
+        
         matriz = new int[14][13];
         matriz[0][0]=1;
         matriz[0][12]=22;
@@ -47,23 +57,25 @@ public class lexicoSintactico {
         matriz[11][11]=20;
         matriz[12][9]=15;
         matriz[12][11]=21;
-        
-        
+    }
+    
+    public void ingresa() throws FileNotFoundException, IOException {
 
-        
-        
+        String entrada;
+        FileReader f = new FileReader("src/Lexico1/entradas.txt");
+        try (BufferedReader b = new BufferedReader(f)) {
+           if ((entrada = b.readLine()) != null) {
+                System.out.println(entrada);
+            }
+        } catch (Exception e) {
+            System.out.println("archivo no encontrado");
 
+        }
 
     }
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         lexicoSintactico n = new lexicoSintactico();
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < 13; j++) {
-                if(n.matriz[i][j]!=0){
-                System.out.println(i+","+j+"  "+n.matriz[i][j]);
-            }
-            }
-        }
     }
     
 }
