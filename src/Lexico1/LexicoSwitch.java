@@ -8,8 +8,7 @@ import java.io.IOException;
 public class LexicoSwitch {
 
     int estado;
-    boolean IsAccept;
-    int cont;
+    
 
     public void ingresa() throws FileNotFoundException, IOException {
 
@@ -17,8 +16,8 @@ public class LexicoSwitch {
         FileReader f = new FileReader("src/Lexico1/entradas.txt");
         try (BufferedReader b = new BufferedReader(f)) {
             while ((entrada = b.readLine()) != null) {
-                cont=0;
-                proceso(entrada);
+                
+                separa(entrada);
             }
         } catch (Exception e) {
             System.out.println("archivo no encontrado");
@@ -26,14 +25,30 @@ public class LexicoSwitch {
         }
 
     }
-
+public void separa(String entrada){
+    String palabra="";
+    for (int i = 0; i < entrada.length(); i++) {
+        if(isCharacter(entrada.charAt(i)) ){
+            proceso(palabra);
+            palabra="";
+            palabra+=entrada.charAt(i);
+            proceso(palabra);
+            palabra="";
+        }
+        else if(i == entrada.length()-1){
+           palabra+=entrada.charAt(i);
+             proceso(palabra);
+            palabra="";
+        }
+         else if(!isCharacter(entrada.charAt(i))){
+            palabra+=entrada.charAt(i);
+        }
+       
+    }
+    
+}
     public void proceso(String c) {
         String cadena = c.replace(" ", "");
-        for (int i = 0; i < cadena.length(); i++) {
-//            if(cadena.charAt(i)){
-//                
-//            }
-        }
         estado = 0;
 
         for (int i = 0; i < cadena.length(); i++) {
@@ -50,7 +65,7 @@ public class LexicoSwitch {
                      estado=3;   
                     }
                     else if(isCharacter(cadena.charAt(i))){
-                        cont=1;
+                       
                         estado=4;
                     }
                     else if(!isAlph(cadena.charAt(i)) && !isDigit(cadena.charAt(i))
@@ -83,7 +98,7 @@ public class LexicoSwitch {
                     break;
                 case 4:
                     if(isCharacter(cadena.charAt(i))){
-                        cont=cont+1;
+                       
                         
                 }else{
                         estado=5;
@@ -100,18 +115,16 @@ public class LexicoSwitch {
         
         if(estado==1|estado==2){
             System.out.println("Digito: "+cadena);
+            
         }
         
         if(estado==3){
             System.out.println("Identificador: "+cadena);
         }
         if(estado==4){
-            if(cont==1){
+            
             System.out.println("Caracter simple: "+cadena);
-            }else if(cont!=1){
-                            System.out.println("Tienes "+cont+" caracter simple: "+cadena);
-            }
-                
+           
         }
         if(estado==5){
             System.err.println("Entrada no valida: "+cadena);
@@ -132,7 +145,7 @@ public class LexicoSwitch {
     }
 
     public boolean isCharacter(char c) {
-        return c == '+' || c == '-' || c == '/' || c == '$';
+        return c == '+' || c == '-' || c == '/' || c == '$'|| c == '='|| c == ';';
     }
 
     public static void main(String[] args) throws IOException {

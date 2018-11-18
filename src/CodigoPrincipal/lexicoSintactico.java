@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import Estructura.Pila;
+import Lexico1.LexicoSwitch;
+import Lexico2.Lector;
 
 /**
  *
@@ -16,10 +19,20 @@ import java.io.IOException;
  */
 public class lexicoSintactico {
     int matriz[][];
+    String x,a;
+    Lector l;
+    LexicoSwitch ls;
+    Pila pila;
+    Pila doc;
+    
     
     public lexicoSintactico() throws IOException{
+     pila = new Pila();
+     doc= new Pila();
+     l= new Lector();
      creacionMatriz();
      ingresa();
+     
     }
     public void creacionMatriz(){
         
@@ -62,11 +75,14 @@ public class lexicoSintactico {
     public void ingresa() throws FileNotFoundException, IOException {
 
         String entrada;
+        int contador=0;
         FileReader f = new FileReader("src/Lexico1/entradas.txt");
         try (BufferedReader b = new BufferedReader(f)) {
-           if ((entrada = b.readLine()) != null) {
-                System.out.println(entrada);
+           while ((entrada = b.readLine()) != null) {
+
+               //doc.push(entrada);
             }
+           
         } catch (Exception e) {
             System.out.println("archivo no encontrado");
 
@@ -74,8 +90,92 @@ public class lexicoSintactico {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        lexicoSintactico n = new lexicoSintactico();
+    
+    public void lldriver(){
+        doc.push("end");
+        doc.push(";");
+                doc.push("intLiteral");
+        doc.push("=");
+                doc.push("id");    
+                doc.push("begin");
+
+
+
+        // simbolo inicial en la pila
+        pila.push("system_goal");
+        //asignar a "x" el simbolo el simbolo en la parte alta de la pila
+        x=pila.muestra();
+        //asigne a "a" el token de entrada
+        a=doc.pop();
+int ind=1;
+        while(!pila.empty()){
+            System.out.println("vuelta "+ind);
+            //if x in noTerminals then
+            if(l.estNoTerminales.buscar(x)!=-1){
+                int fila=l.estNoTerminales.buscar(x);
+                int columna=l.estTerminales.buscar(a);
+                int posicion=matriz[columna][fila];
+                if(posicion!=0){  
+
+                    //pop() y push
+                    
+                    metPush(l.Estderecha.buscar(posicion-1));
+
+                     // remplazar x con produccion de la matriz 
+                    x=pila.muestra();
+                   
+                }else{
+                    // procesa error de sintaxis
+                    System.out.println("Error *1");
+                    System.exit(0);
+                }
+                //end if
+            }else{
+              if(x.contains("'")){
+                  x=x.replace("'", "");
+              }
+              
+               if(x.equals(a)){
+                   pila.pop();
+                   
+                   if(!pila.empty()){
+                   x=pila.muestra();
+                   a=doc.pop();
+                   }
+               }
+               else{
+                   System.out.println("Error *2");
+                   System.exit(0);
+               } //end if
+                
+            }//end if
+            ind++;
+        }//end while
+        System.out.println("Terminado");
+    }
+   
+    
+    public void metPush(String n){
+        //System.out.println("**inicio");
+        pila.pop();
+         String[] p=n.split(" ");
+         
+         Pila ext=new Pila();
+                    for (int j = 0; j <p.length ; j++) {
+                       ext.push(p[j]);
+                    }
+                    //los acomoda en el orden correcto
+                    for (int i = 0; i < p.length; i++) {
+                        pila.push(ext.pop());
+                     }
+   //                 pila.mostrar();
+    }
+        public static void main(String[] args) throws IOException {
+        lexicoSintactico n= new lexicoSintactico();
+        n.lldriver();
+    }
+        
     }
     
-}
+    
+

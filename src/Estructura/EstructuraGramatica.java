@@ -40,7 +40,7 @@ public class EstructuraGramatica {
     }
     
     public int buscar(String aBuscar){
-        int posición = -1, i = 1;
+        int posición = -1, i = 0;
         Nodo aux = inicio;
         
         while(aux != null){
@@ -55,6 +55,23 @@ public class EstructuraGramatica {
         return posición;
     }
     
+    public String buscar(int posicion){
+        int act= 0;
+        String p=null;
+        Nodo aux = inicio;
+        
+        while(aux != null){
+           if(act==posicion){
+            p= aux.palabra;
+               break;
+               
+           }else{
+               aux = aux.siguiente;
+               act++;
+           }
+        }
+        return p;
+    }
     
    
 // -------------------- clase privada----------------------------------

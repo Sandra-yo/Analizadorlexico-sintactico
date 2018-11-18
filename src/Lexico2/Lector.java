@@ -12,7 +12,7 @@ public class Lector {
     ArrayList listaIzquierda,listaDerecha;
     String  []derecha;
     String []izquierda;
-    EstructuraGramatica Estizquierda,Estderecha,estTerminales,estNoTerminales;
+  public  EstructuraGramatica Estizquierda,Estderecha,estTerminales,estNoTerminales;
     
     public Lector() throws IOException{
         Estizquierda = new EstructuraGramatica();
@@ -154,16 +154,16 @@ public class Lector {
        
        
         public void despliega(){
-            System.out.println("Lista Enlazada:");
-             System.out.println("izquierda----");
-             Estizquierda.mostrar();
-             System.out.println("derecha---");
-             Estderecha.mostrar();
-             System.out.println("--- --- ---");
-             estNoTerminales.mostrar();
-             System.out.println("... ... ...");
-             estTerminales.mostrar();
-             
+           // System.out.println("Lista Enlazada:");
+//             System.out.println("izquierda----");
+   //          Estizquierda.mostrar();
+   //          System.out.println("derecha---");
+          //   Estderecha.mostrar();
+//             System.out.println("--- --- --- no terminales");
+        //   estNoTerminales.mostrar();
+//             System.out.println("... ... ...");
+           // estTerminales.mostrar();
+  //           
         }
 
     public static void main(String[] args) throws IOException {
