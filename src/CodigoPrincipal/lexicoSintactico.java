@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import Estructura.Pila;
-import Lexico1.LexicoSwitch;
+import Lexico2.LexicoSwitch;
 import Lexico2.Lector;
 
 /**
@@ -88,6 +88,13 @@ public class lexicoSintactico {
 
         }
 
+    }
+    public String estadoInicial(){
+        String estado=null;
+        if(l.Estderecha.buscar(l.Estizquierda.inicio.palabra)==-1){
+        l.Estderecha.mostrar();
+        }
+        return estado;
     }
 
     

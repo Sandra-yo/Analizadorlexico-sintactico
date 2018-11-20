@@ -8,15 +8,20 @@ import java.io.IOException;
 public class LexicoSwitch {
 
     int estado;
-    
+    String palabraR;
+    String tipo;
+    boolean permiso;
+    public LexicoSwitch(String palabra) {
+        separa(palabra);
+    }
 
     public void ingresa() throws FileNotFoundException, IOException {
 
         String entrada;
         FileReader f = new FileReader("src/Lexico1/entradas.txt");
         try (BufferedReader b = new BufferedReader(f)) {
-            while ((entrada = b.readLine()) != null) {
-                
+            if ((entrada = b.readLine()) != null) {
+
                 separa(entrada);
             }
         } catch (Exception e) {
@@ -25,28 +30,32 @@ public class LexicoSwitch {
         }
 
     }
-public void separa(String entrada){
-    String palabra="";
-    for (int i = 0; i < entrada.length(); i++) {
-        if(isCharacter(entrada.charAt(i)) ){
-            proceso(palabra);
-            palabra="";
-            palabra+=entrada.charAt(i);
-            proceso(palabra);
-            palabra="";
+
+    public void separa(String entrada) {
+        String palabra = "";
+      //  do{
+            
+//        }while(permiso==true)
+        for (int i = 0; i < entrada.length(); i++) {
+            if (isCharacter(entrada.charAt(i))) {
+                proceso(palabra);
+                palabra = "";
+                palabra += entrada.charAt(i);
+                
+                proceso(palabra);
+                palabra = "";
+            } else if (i == entrada.length() - 1) {
+                palabra += entrada.charAt(i);
+                proceso(palabra);
+                palabra = "";
+            } else if (!isCharacter(entrada.charAt(i))) {
+                palabra += entrada.charAt(i);
+            }
+
         }
-        else if(i == entrada.length()-1){
-           palabra+=entrada.charAt(i);
-             proceso(palabra);
-            palabra="";
-        }
-         else if(!isCharacter(entrada.charAt(i))){
-            palabra+=entrada.charAt(i);
-        }
-       
+
     }
-    
-}
+
     public void proceso(String c) {
         String cadena = c.replace(" ", "");
         estado = 0;
@@ -56,80 +65,82 @@ public void separa(String entrada){
             switch (estado) {
 
                 case 0:
-                    if(cadena.charAt(i)=='0'){
-                    estado=1;
-                }else  if(isDigit(cadena.charAt(i))&&cadena.charAt(i)!='0'){
-                     estado=2;   
+                    if (cadena.charAt(i) == '0') {
+                        estado = 1;
+                    } else if (isDigit(cadena.charAt(i)) && cadena.charAt(i) != '0') {
+                        estado = 2;
+                    } else if (isAlph(cadena.charAt(i))) {
+                        estado = 3;
+                    } else if (isCharacter(cadena.charAt(i))) {
+
+                        estado = 4;
+                    } else if (!isAlph(cadena.charAt(i)) && !isDigit(cadena.charAt(i))
+                            && !isCharacter(cadena.charAt(i))) {
+                        estado = 5;
                     }
-                    else  if(isAlph(cadena.charAt(i))){
-                     estado=3;   
-                    }
-                    else if(isCharacter(cadena.charAt(i))){
-                       
-                        estado=4;
-                    }
-                    else if(!isAlph(cadena.charAt(i)) && !isDigit(cadena.charAt(i))
-                            && !isCharacter(cadena.charAt(i))){
-                        estado=5;
-                    }
-                    
 
                     break;
                 case 1:
-                    if(isDigit(cadena.charAt(i))|isAlph(cadena.charAt(i))
-                            |isCharacter(cadena.charAt(i))){
-                        estado=5;
+                    if (isDigit(cadena.charAt(i)) | isAlph(cadena.charAt(i))
+                            | isCharacter(cadena.charAt(i))) {
+                        estado = 5;
+                        
                     }
 
                     break;
-                case 2: if(!isDigit(cadena.charAt(i))){
-                        estado=5;
+                case 2:
+                    if (!isDigit(cadena.charAt(i))) {
+                        estado = 5;
                     }
-                   
 
                     break;
                 case 3:
-                    if(isAlph(cadena.charAt(i))|isDigit(cadena.charAt(i))){
-                        
-                    }else{
-                        estado=5;
+                    if (isAlph(cadena.charAt(i)) | isDigit(cadena.charAt(i))) {
+
+                    } else {
+                        estado = 5;
                     }
 
                     break;
                 case 4:
-                    if(isCharacter(cadena.charAt(i))){
-                       
-                        
-                }else{
-                        estado=5;
+                    if (isCharacter(cadena.charAt(i))) {
+
+                    } else {
+                        estado = 5;
                     }
 
                     break;
                 case 5:
 
                     break;
-                
+
             }
 
         }
-        
-        if(estado==1|estado==2){
-            System.out.println("Digito: "+cadena);
-            
-        }
-        
-        if(estado==3){
-            System.out.println("Identificador: "+cadena);
-        }
-        if(estado==4){
-            
-            System.out.println("Caracter simple: "+cadena);
-           
-        }
-        if(estado==5){
-            System.err.println("Entrada no valida: "+cadena);
+
+        if (estado == 1 | estado == 2) {
+            System.out.println("Digito: " + cadena);
+            palabraR=cadena;
+            tipo="intLiteral";
+
         }
 
+        if (estado == 3) {
+                        tipo= "id";
+        }
+        if (estado == 4) {
+            System.out.println("Caracter simple: " + cadena);
+            palabraR=cadena;
+
+        }
+        if (estado == 5) {
+            System.err.println("Entrada no valida: " + cadena);
+            System.exit(0);
+        }
+
+    }
+    public String regresaPalabra(){
+        return palabraR;
     }
 
     public boolean isDigit(char c) {
@@ -145,12 +156,9 @@ public void separa(String entrada){
     }
 
     public boolean isCharacter(char c) {
-        return c == '+' || c == '-' || c == '/' || c == '$'|| c == '='|| c == ';';
+        return c == '+' || c == '-' || c == '/' || c == '$' || c == '=' || c == ';';
     }
+    
 
-    public static void main(String[] args) throws IOException {
-        LexicoSwitch t = new LexicoSwitch();
-        t.ingresa();
-    }
 
 }
